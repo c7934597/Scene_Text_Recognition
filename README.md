@@ -9,8 +9,9 @@ USDOT
 sudo apt-get install libcurl4-openssl-dev
 
 ### 1-2  
-<https://www.paddlepaddle.org.cn/inference/user_guides/download_lib.html#python>  
-Jetpack4.6.1：nv_jetson-cuda10.2-trt8.2-xavier
+
+Download Jetpack4.6.1：nv_jetson-cuda10.2-trt8.2-xavier
+<https://paddle-inference-lib.bj.bcebos.com/2.4.0-rc0/python/Jetson/jetpack4.6.1_gcc7.5/xavier/paddlepaddle_gpu-2.4.0rc0-cp37-cp37m-linux_aarch64.whl>  
 
 ### 1-3  
 
