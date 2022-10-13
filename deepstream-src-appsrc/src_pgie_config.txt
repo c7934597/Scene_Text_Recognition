@@ -150,7 +150,7 @@ gie-unique-id=1
 #operate-on-class-ids=0
 
 # Number of consecutive batches to be skipped for inference
-interval=25
+interval=0
 
 # There is a “workspace” parameter that limit the maximal memory amount for TensorRT. Default is set to 450Mb (450x1024x1024).
 #workspace-size = 471859200
@@ -165,7 +165,7 @@ interval=25
 
 [class-attrs-all]
 # Detection threshold to be applied prior to clustering operation(NMS)
-pre-cluster-threshold=0.5
+pre-cluster-threshold=0.1
 
 # Detection threshold to be applied post clustering operation
 #post-cluster-threshold=0.5
