@@ -35,7 +35,7 @@ python3 -m pip install -r requirements.txt
 
 ## 2. Deploye Python Site-Packages & Models  
 
-### 2-1. Site-Packages  
+### 2-1. Site-Packages (Docker version don't need this step.)   
 
 shapely  
 scikit-image  
@@ -57,12 +57,8 @@ uvicorn
 
 ### 2-2. Models  
 
-Git has a paddleocr folder, please move it to jetson root.
+Git has a ./paddleocr folder, please move it to jetson root.
 
 ## 3. Change ocr image file path  
 
-"/opt/nvidia/deepstream/deepstream-6.0/sources/apps/sample_apps/deepstream-src-appsrc/OCR/images/ocr.jpg"  
-  
-to  
-
-"/New Path/deepstream-src-appsrc/OCR/images/ocr.jpg"
+export IMAGE_PATH=/opt/nvidia/deepstream/deepstream-6.0/sources/apps/sample_apps/deepstream-src-appsrc/OCR/images/ocr.jpg
