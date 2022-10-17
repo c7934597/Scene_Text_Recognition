@@ -9,7 +9,7 @@ ARG OCR_PATH=/deepstream/OCR \
     PYMUDF_VERSION=1.20.3
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8 \
-    IMAGE_PATH=$OCR_PATH/images 
+    IMAGE_PATH=$OCR_PATH/images/ocr.jpg 
 
 RUN apt update \
     && apt install -y htop wget curl git software-properties-common libcurl4-openssl-dev python3.7 python3-pip libgeos-dev
@@ -55,7 +55,7 @@ RUN curl -s https://paddle-inference-lib.bj.bcebos.com/2.4.0-rc0/python/Jetson/j
 #     && make HAVE_X11=no HAVE_GLUT=no prefix=/usr/local install \
 #     && rm -rf mupdf-$PYMUDF_VERSION-source.tar.gz  
 
-ADD ./PaddleOCR /PaddleOCR 
+ADD ../PaddleOCR /PaddleOCR 
 
 # RUN git clone -n https://github.com/PaddlePaddle/PaddleOCR.git --depth 1 /PaddleOCR \
 #     && cd /PaddleOCR  \
@@ -71,13 +71,13 @@ RUN cd /PaddleOCR \
 #     && python3 -m pip install -r requirements.txt \
 #     && pip3 install paddleocr
 
-ADD deepstream-src-appsrc/OCR /deepstream/OCR
-ADD .paddleocr /root/./paddleocr
+ADD ../deepstream-src-appsrc/OCR /deepstream/OCR
+ADD ../.paddleocr /root/.paddleocr
 
 WORKDIR $OCR_PATH
 
-RUN python3 -m pip install -r requirements.txt
-RUN ln -sf /usr/lib/aarch64-linux-gnu/libcudnn.so.8.2.1 /usr/lib/libcudnn.so \
+RUN python3 -m pip install -r requirements.txt \
+    &&  ln -sf /usr/lib/aarch64-linux-gnu/libcudnn.so.8.2.1 /usr/lib/libcudnn.so \
     && ln -sf /usr/local/cuda-10.2/targets/aarch64-linux/lib/libcublas.so.10.2.3.300 /usr/lib/libcublas.so
 
 EXPOSE 8868 8000
