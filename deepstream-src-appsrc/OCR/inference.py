@@ -11,8 +11,7 @@ class Inference:
         result = ocr.ocr(image_path, cls = False)
         for line in result:
             if "USDOT" in line[1][0] or "US DOT" in line[1][0] or "U.S.DOT" in line[1][0] or "U.S. DOT" in line[1][0]:
-                ocr_string = re.sub("[a-zA-Z#.]", "", ocr_string)
-                ocr_result = str.strip(ocr_string)
+                ocr_result = str.strip(re.sub("[a-zA-Z#.]", "", line[1][0]))
                 if 6 <= len(ocr_result) <= 8:
                     return ocr_result
                 else:
