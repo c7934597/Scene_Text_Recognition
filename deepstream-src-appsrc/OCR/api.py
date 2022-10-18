@@ -1,3 +1,4 @@
+import os
 import time
 import uvicorn
 import logging
@@ -24,6 +25,17 @@ args = parse_args()
 if args.debug:
     logging.getLogger('Debug Mode').setLevel(logging.DEBUG)
 
+IMAGE_PATH = ""
+try:
+    if "IMAGE_PATH" in os.environ:
+        if os.environ["IMAGE_PATH"] == "undefined" or os.environ["IMAGE_PATH"] == "":
+            logger.error("Environment Variable - IMAGE_PATH value is error")
+            os._exit(0)
+        else:
+            IMAGE_PATH = os.environ["IMAGE_PATH"]
+except Exception as e:
+    logger.error(e)
+    os._exit(0)
 
 @app.exception_handler(RequestValidationError)
 def request_validation_exception_handler(request: Request, exc: RequestValidationError):
@@ -35,7 +47,7 @@ def request_validation_exception_handler(request: Request, exc: RequestValidatio
 def main():
     try:
         since = time.perf_counter()
-        result = Inference.run()
+        result = Inference.run(IMAGE_PATH)
         time_elapsed = time.perf_counter() - since
         logger.info(str(round(time_elapsed * 1000, 2)) + "ms")
         logger.info(result)
@@ -47,4 +59,5 @@ def main():
 
 
 if __name__ == "__main__":
+    Inference.run(IMAGE_PATH)
     uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=args.debug, debug=args.debug)
