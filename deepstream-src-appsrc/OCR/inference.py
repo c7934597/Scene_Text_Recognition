@@ -17,12 +17,11 @@ class Inference:
         ocr = PaddleOCR(use_angle_cls=False, use_gpu=True, lang="en")  # need to run only once to download and load model into memory
         result = ocr.ocr(IMAGE_PATH, cls = False)
         for line in result:
-            ocr_string = str.strip(line[1][0])
-            if "USDOT" in ocr_string or "US DOT" in ocr_string or "U.S.DOT" in ocr_string or "U.S. DOT" in ocr_string:
-                ocr_string = re.sub("[a-zA-Z]", "", ocr_string)
-                ocr_result = str.strip(ocr_string.replace("#",""))
+            if "USDOT" in line[1][0] or "US DOT" in line[1][0] or "U.S.DOT" in line[1][0] or "U.S. DOT" in line[1][0]:
+                ocr_string = re.sub("[a-zA-Z#.]", "", ocr_string)
+                ocr_result = str.strip(ocr_string)
                 if 6 <= len(ocr_result) <= 8:
-                    return str.strip(ocr_string.replace("#",""))
-            else:
-                continue
+                    return ocr_result
+                else:
+                    return ""
         return ""
