@@ -71,7 +71,7 @@ unix {
     {
         LIBS += -Wl,-z,defs -L$(PLEXUSLIB_DIR)/Linux/opencv/bin/lib -lopencv_core -lopencv_objdetect -lopencv_dnn -lopencv_imgproc -lopencv_imgcodecs
         LIBS += -L$(CURL_DIR)/lib -lcurl
-	LIBS += -L$(PLEXUSLIB_DIR)/Linux/deepstream/deepstream-6.0/lib/ -lnvdsgst_meta -lnvds_meta -lnvds_batch_jpegenc
+	    LIBS += -L$(PLEXUSLIB_DIR)/Linux/deepstream/deepstream-6.0/lib/ -lnvdsgst_meta -lnvds_meta -lnvds_batch_jpegenc
         INCLUDEPATH += $(PLEXUSLIB_DIR)/Linux/opencv/bin/include/opencv4
 	INCLUDEPATH += /usr/local/cuda/include
 	LIBS += -L/usr/local/cuda/lib64 -lcudart
