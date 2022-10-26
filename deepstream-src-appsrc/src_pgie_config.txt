@@ -165,10 +165,10 @@ interval=0
 
 [class-attrs-all]
 # Detection threshold to be applied prior to clustering operation(NMS)
-pre-cluster-threshold=0.1
+pre-cluster-threshold=0.5
 
 # Detection threshold to be applied post clustering operation
-#post-cluster-threshold=0.5
+post-cluster-threshold=0.5
 
 # Epsilon values for OpenCV grouprectangles() function and DBSCAN algorithm
 eps=0.2
