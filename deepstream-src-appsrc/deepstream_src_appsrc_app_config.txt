@@ -4,7 +4,7 @@ muxer_width = 1920
 muxer_height = 1080
 
 # Boolean property to inform muxer that sources are live
-muxer_live_source = 1
+muxer_live_source = 0
 
 # Muxer batch size
 muxer_batch_size = 1
