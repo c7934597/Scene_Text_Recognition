@@ -838,8 +838,6 @@ int main(int argc, char *argv[])
   g_print("Now playing: %s\n", argv[1]);
   gst_element_set_state(pipeline, GST_STATE_PLAYING);
 
-  system("python3 OCR/api.py &");
-
   /* Wait till pipeline encounters an error or EOS */
   g_print("Running...\n");
   g_main_loop_run(loop);
