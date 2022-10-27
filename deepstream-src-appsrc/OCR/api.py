@@ -5,6 +5,7 @@ import logging
 import argparse
 
 from inference import Inference
+from paddleocr import PaddleOCR
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
@@ -33,6 +34,7 @@ try:
             os._exit(0)
         else:
             IMAGE_PATH = os.environ["IMAGE_PATH"]
+        ocr = PaddleOCR(use_angle_cls=False, use_gpu=True, lang="en")  # need to run only once to download and load model into memory
 except Exception as e:
     logger.error(e)
     os._exit(0)
@@ -47,7 +49,7 @@ def request_validation_exception_handler(request: Request, exc: RequestValidatio
 def main():
     try:
         since = time.perf_counter()
-        result = Inference.run(IMAGE_PATH)
+        result = Inference.run(ocr, IMAGE_PATH)
         time_elapsed = time.perf_counter() - since
         logger.info(str(round(time_elapsed * 1000, 2)) + "ms")
         logger.info(result)
@@ -59,5 +61,5 @@ def main():
 
 
 if __name__ == "__main__":
-    Inference.run(IMAGE_PATH)
+    Inference.run(ocr, IMAGE_PATH)
     uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=args.debug, debug=args.debug)
