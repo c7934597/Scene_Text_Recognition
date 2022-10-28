@@ -65,4 +65,4 @@ def main():
 
 if __name__ == "__main__":
     Inference.run(ocr, IMAGE_PATH)
-    uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=args.debug, debug=args.debug)
+    uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=args.debug)
