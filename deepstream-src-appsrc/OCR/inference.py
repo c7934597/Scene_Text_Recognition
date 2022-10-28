@@ -9,7 +9,7 @@ class Inference:
         for sub_result in result:
             for line in sub_result:
                 ocr_result = line[1][0]
-                if "DOT" in ocr_result:
+                if ("DOT" or "DDT" or "D0T" or "OOT" or "ODT" or "O0T" or "0OT" or "0DT" or "00T") in ocr_result:
                     ocr_result = str.strip(re.sub("[a-zA-Z#-.]", "", ocr_result))
                     if 6 <= len(ocr_result) <= 8:
                         return ocr_result
