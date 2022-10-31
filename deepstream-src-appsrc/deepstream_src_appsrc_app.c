@@ -362,7 +362,7 @@ pgie_src_pad_buffer_probe(GstPad *pad, GstPadProbeInfo *info,
         if (open_rec)
         {
           nvds_obj_enc_process(ctx, &userData, ip_surf, obj_meta, frame_meta);
-
+          nvds_obj_enc_finish(ctx);
           CURL *curl;
           CURLcode res;
           curl = curl_easy_init(); // 初始化
@@ -401,7 +401,6 @@ pgie_src_pad_buffer_probe(GstPad *pad, GstPadProbeInfo *info,
       }
     }
   }
-  nvds_obj_enc_finish(ctx);
   return GST_PAD_PROBE_OK;
 }
 
