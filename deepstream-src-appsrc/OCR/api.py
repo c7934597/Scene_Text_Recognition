@@ -18,9 +18,8 @@ logger = logging.getLogger(__name__)
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--debug', action = 'store_true')
     return parser.parse_args()
-
 
 args = parse_args()
 if args.debug:
@@ -34,7 +33,7 @@ try:
             os._exit(0)
         else:
             IMAGE_PATH = os.environ["IMAGE_PATH"]
-            ocr = PaddleOCR(use_angle_cls=False, use_gpu=True, lang="en")  # need to run only once to download and load model into memory
+            ocr = PaddleOCR(use_angle_cls = False, use_gpu = True, lang = "en")  # need to run only once to download and load model into memory
     else:
         logger.error("Environment Variable - IMAGE_PATH value is missing")
         os._exit(0)
