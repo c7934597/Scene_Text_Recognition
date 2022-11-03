@@ -46,7 +46,7 @@ gint frame_number = 0;
 
 #define SIZE 256
 #define save_img TRUE
-#define attach_user_meta TRUE
+#define attach_user_meta FALSE
 
 /*config vars*/
 gint muxer_width = 0;
@@ -163,9 +163,9 @@ new_sample(GstElement *sink, gpointer *data)
 
   if (sample)
   {
-    /* Obtain GstBuffer from sample and then extract metadata from it. */
-    buf = gst_sample_get_buffer(sample);
-    NvDsBatchMeta *batch_meta = gst_buffer_get_nvds_batch_meta(buf);
+    // /* Obtain GstBuffer from sample and then extract metadata from it. */
+    // buf = gst_sample_get_buffer(sample);
+    // NvDsBatchMeta *batch_meta = gst_buffer_get_nvds_batch_meta(buf);
 
     // for (l_frame = batch_meta->frame_meta_list; l_frame != NULL;
     //     l_frame = l_frame->next) {
@@ -384,10 +384,6 @@ pgie_src_pad_buffer_probe(GstPad *pad, GstPadProbeInfo *info,
               memset(output_response, 0, s.len);
               strcpy(original_response, &s.ptr[1]);
               strncat(output_response, original_response, s.len - 2);
-              // g_print("Car box left value : %f\n", obj_meta->rect_params.left);
-              // g_print("Car box top value : %f\n", obj_meta->rect_params.top);
-              // g_print("Car box width value : %f\n", obj_meta->rect_params.width);
-              // g_print("Car box height value : %f\n", obj_meta->rect_params.height);
               g_print("%s, %f\n", output_response, obj_meta->confidence);
             }
             free(s.ptr);
@@ -404,78 +400,78 @@ pgie_src_pad_buffer_probe(GstPad *pad, GstPadProbeInfo *info,
   return GST_PAD_PROBE_OK;
 }
 
-/* This is the buffer probe function that we have registered on the sink pad
- * of the OSD element. All the infer elements in the pipeline shall attach
- * their metadata to the GstBuffer, here we will iterate & process the metadata
- * forex: class ids to strings, counting of class_id objects etc. */
-static GstPadProbeReturn
-osd_sink_pad_buffer_probe(GstPad *pad, GstPadProbeInfo *info,
-                          gpointer u_data)
-{
-  GstBuffer *buf = (GstBuffer *)info->data;
-  guint num_rects = 0;
-  NvDsObjectMeta *obj_meta = NULL;
-  guint vehicle_count = 0;
-  guint person_count = 0;
-  NvDsMetaList *l_frame = NULL;
-  NvDsMetaList *l_obj = NULL;
-  NvDsDisplayMeta *display_meta = NULL;
+// /* This is the buffer probe function that we have registered on the sink pad
+//  * of the OSD element. All the infer elements in the pipeline shall attach
+//  * their metadata to the GstBuffer, here we will iterate & process the metadata
+//  * forex: class ids to strings, counting of class_id objects etc. */
+// static GstPadProbeReturn
+// osd_sink_pad_buffer_probe(GstPad *pad, GstPadProbeInfo *info,
+//                           gpointer u_data)
+// {
+//   GstBuffer *buf = (GstBuffer *)info->data;
+//   guint num_rects = 0;
+//   NvDsObjectMeta *obj_meta = NULL;
+//   guint vehicle_count = 0;
+//   guint person_count = 0;
+//   NvDsMetaList *l_frame = NULL;
+//   NvDsMetaList *l_obj = NULL;
+//   NvDsDisplayMeta *display_meta = NULL;
 
-  NvDsBatchMeta *batch_meta = gst_buffer_get_nvds_batch_meta(buf);
-  int current_device = -1;
-  cudaGetDevice(&current_device);
-  struct cudaDeviceProp prop;
-  cudaGetDeviceProperties(&prop, current_device);
+//   NvDsBatchMeta *batch_meta = gst_buffer_get_nvds_batch_meta(buf);
+//   int current_device = -1;
+//   cudaGetDevice(&current_device);
+//   struct cudaDeviceProp prop;
+//   cudaGetDeviceProperties(&prop, current_device);
 
-  // for (l_frame = batch_meta->frame_meta_list; l_frame != NULL; l_frame = l_frame->next) {
-  //     NvDsFrameMeta *frame_meta = (NvDsFrameMeta *) (l_frame->data);
-  //     int offset = 0;
-  //     for (l_obj = frame_meta->obj_meta_list; l_obj != NULL; l_obj = l_obj->next) {
-  //         obj_meta = (NvDsObjectMeta *) (l_obj->data);
-  //         if (obj_meta->class_id == PGIE_CLASS_ID_VEHICLE) {
-  //             vehicle_count++;
-  //             num_rects++;
-  //         }
-  //         if (obj_meta->class_id == PGIE_CLASS_ID_PERSON) {
-  //             person_count++;
-  //             num_rects++;
-  //         }
-  //     }
-  //     display_meta = nvds_acquire_display_meta_from_pool(batch_meta);
-  //     NvOSD_TextParams *txt_params  = &display_meta->text_params[0];
-  //     display_meta->num_labels = 1;
-  //     txt_params->display_text = g_malloc0 (MAX_DISPLAY_LEN);
-  //     offset = snprintf(txt_params->display_text, MAX_DISPLAY_LEN, "Person = %d ", person_count);
-  //     offset = snprintf(txt_params->display_text + offset , MAX_DISPLAY_LEN, "Vehicle = %d ", vehicle_count);
+//   // for (l_frame = batch_meta->frame_meta_list; l_frame != NULL; l_frame = l_frame->next) {
+//   //     NvDsFrameMeta *frame_meta = (NvDsFrameMeta *) (l_frame->data);
+//   //     int offset = 0;
+//   //     for (l_obj = frame_meta->obj_meta_list; l_obj != NULL; l_obj = l_obj->next) {
+//   //         obj_meta = (NvDsObjectMeta *) (l_obj->data);
+//   //         if (obj_meta->class_id == PGIE_CLASS_ID_VEHICLE) {
+//   //             vehicle_count++;
+//   //             num_rects++;
+//   //         }
+//   //         if (obj_meta->class_id == PGIE_CLASS_ID_PERSON) {
+//   //             person_count++;
+//   //             num_rects++;
+//   //         }
+//   //     }
+//   //     display_meta = nvds_acquire_display_meta_from_pool(batch_meta);
+//   //     NvOSD_TextParams *txt_params  = &display_meta->text_params[0];
+//   //     display_meta->num_labels = 1;
+//   //     txt_params->display_text = g_malloc0 (MAX_DISPLAY_LEN);
+//   //     offset = snprintf(txt_params->display_text, MAX_DISPLAY_LEN, "Person = %d ", person_count);
+//   //     offset = snprintf(txt_params->display_text + offset , MAX_DISPLAY_LEN, "Vehicle = %d ", vehicle_count);
 
-  //     /* Now set the offsets where the string should appear */
-  //     txt_params->x_offset = 10;
-  //     txt_params->y_offset = 12;
+//   //     /* Now set the offsets where the string should appear */
+//   //     txt_params->x_offset = 10;
+//   //     txt_params->y_offset = 12;
 
-  //     /* Font , font-color and font-size */
-  //     txt_params->font_params.font_name = "Serif";
-  //     txt_params->font_params.font_size = 10;
-  //     txt_params->font_params.font_color.red = 1.0;
-  //     txt_params->font_params.font_color.green = 1.0;
-  //     txt_params->font_params.font_color.blue = 1.0;
-  //     txt_params->font_params.font_color.alpha = 1.0;
+//   //     /* Font , font-color and font-size */
+//   //     txt_params->font_params.font_name = "Serif";
+//   //     txt_params->font_params.font_size = 10;
+//   //     txt_params->font_params.font_color.red = 1.0;
+//   //     txt_params->font_params.font_color.green = 1.0;
+//   //     txt_params->font_params.font_color.blue = 1.0;
+//   //     txt_params->font_params.font_color.alpha = 1.0;
 
-  //     /* Text background color */
-  //     txt_params->set_bg_clr = 1;
-  //     txt_params->text_bg_clr.red = 0.0;
-  //     txt_params->text_bg_clr.green = 0.0;
-  //     txt_params->text_bg_clr.blue = 0.0;
-  //     txt_params->text_bg_clr.alpha = 1.0;
+//   //     /* Text background color */
+//   //     txt_params->set_bg_clr = 1;
+//   //     txt_params->text_bg_clr.red = 0.0;
+//   //     txt_params->text_bg_clr.green = 0.0;
+//   //     txt_params->text_bg_clr.blue = 0.0;
+//   //     txt_params->text_bg_clr.alpha = 1.0;
 
-  //     nvds_add_display_meta_to_frame(frame_meta, display_meta);
-  // }
+//   //     nvds_add_display_meta_to_frame(frame_meta, display_meta);
+//   // }
 
-  // g_print ("Frame Number = %d Number of objects = %d "
-  //         "Vehicle Count = %d Person Count = %d\n",
-  //         frame_number, num_rects, vehicle_count, person_count);
-  // frame_number++;
-  return GST_PAD_PROBE_OK;
-}
+//   // g_print ("Frame Number = %d Number of objects = %d "
+//   //         "Vehicle Count = %d Person Count = %d\n",
+//   //         frame_number, num_rects, vehicle_count, person_count);
+//   // frame_number++;
+//   return GST_PAD_PROBE_OK;
+// }
 
 static gboolean
 bus_call(GstBus *bus, GstMessage *msg, gpointer data)
@@ -806,19 +802,19 @@ int main(int argc, char *argv[])
     return -1;
   }
 
-  /* Lets add probe to get informed of the meta data generated, we add probe to
-   * the sink pad of the osd element, since by that time, the buffer would have
-   * had got all the metadata. */
-  if (!osd_sink_pad)
-    g_print("Unable to get osd sink pad\n");
-  else
-  {
-    // gst_pad_add_probe (osd_sink_pad, GST_PAD_PROBE_TYPE_BUFFER,
-    //     osd_sink_pad_buffer_probe, NULL, NULL);
-    gst_pad_add_probe(osd_sink_pad, GST_PAD_PROBE_TYPE_BUFFER,
-                      osd_sink_pad_buffer_probe, (gpointer)obj_ctx_handle, NULL);
-  }
-  gst_object_unref(osd_sink_pad);
+  // /* Lets add probe to get informed of the meta data generated, we add probe to
+  //  * the sink pad of the osd element, since by that time, the buffer would have
+  //  * had got all the metadata. */
+  // if (!osd_sink_pad)
+  //   g_print("Unable to get osd sink pad\n");
+  // else
+  // {
+  //   // gst_pad_add_probe (osd_sink_pad, GST_PAD_PROBE_TYPE_BUFFER,
+  //   //     osd_sink_pad_buffer_probe, NULL, NULL);
+  //   gst_pad_add_probe(osd_sink_pad, GST_PAD_PROBE_TYPE_BUFFER,
+  //                     osd_sink_pad_buffer_probe, (gpointer)obj_ctx_handle, NULL);
+  // }
+  // gst_object_unref(osd_sink_pad);
 
   if (!appsink_sink_pad)
   {
