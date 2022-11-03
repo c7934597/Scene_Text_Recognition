@@ -189,10 +189,10 @@ roi-top-offset=0
 roi-bottom-offset=0
 
 # Minimum width in pixels of detected objects to be output by the GIE
-detected-min-w=0
+detected-min-w=300
 
 # Minimum height in pixels of detected objects to be output by the GIE
-detected-min-h=0
+detected-min-h=300
 
 # Maximum width in pixels of detected objects to be output by the GIE
 detected-max-w=0

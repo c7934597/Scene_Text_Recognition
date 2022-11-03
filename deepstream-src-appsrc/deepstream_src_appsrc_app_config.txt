@@ -22,12 +22,6 @@ muxer_nvbuf_memory_type = 0
 
 
 [custom]
-# open_rec_usdot, otherwise detec truck
+# open_rec_usdot, otherwise only detect truck
 open_rec = 1
-
-# rec_min_image_width
-rec_min_width = 300
-
-# rec_min_image_height
-rec_min_height = 300
 

@@ -57,8 +57,6 @@ gint muxer_batched_push_timeout = 0;
 gint muxer_nvbuf_memory_type = 0;
 gint open_rec = 0;
 char fileNameString[30];
-gint rec_min_width = 0;
-gint rec_min_height = 0;
 
 /* These are the strings of the labels for the respective models */
 gchar pgie_classes_str[4][32] = {"Vehicle", "TwoWheeler", "Person", "RoadSign"};
@@ -123,14 +121,6 @@ readConfig()
       else if (!strcmp(name, "open_rec"))
       {
         open_rec = atoi(value);
-      }
-      else if (!strcmp(name, "rec_min_width"))
-      {
-        rec_min_width = atoi(value);
-      }
-      else if (!strcmp(name, "rec_min_height"))
-      {
-        rec_min_height = atoi(value);
       }
     }
   }
@@ -343,7 +333,7 @@ pgie_src_pad_buffer_probe(GstPad *pad, GstPadProbeInfo *info,
       /* Conditions that user needs to set to encode the detected objects of
        * interest. Here, by default all the detected objects are encoded.
        * For demonstration, we will encode the first object in the frame */
-      if (obj_meta->class_id == 0 && obj_meta->detector_bbox_info.org_bbox_coords.width >= rec_min_width && obj_meta->detector_bbox_info.org_bbox_coords.height >= rec_min_height)
+      if (obj_meta->class_id == 0)
       {
         NvDsObjEncUsrArgs userData = {0};
         /* To be set by user */
@@ -351,7 +341,7 @@ pgie_src_pad_buffer_probe(GstPad *pad, GstPadProbeInfo *info,
         userData.attachUsrMeta = attach_user_meta;
         /* Quality */
         userData.quality = 100;
-        // /* Set Image WHTL */
+        /* Set Image WHTL */
         obj_meta->rect_params.width = obj_meta->detector_bbox_info.org_bbox_coords.width;
         obj_meta->rect_params.height = obj_meta->detector_bbox_info.org_bbox_coords.height;
         obj_meta->rect_params.top = obj_meta->detector_bbox_info.org_bbox_coords.top;
