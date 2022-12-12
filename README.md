@@ -1,6 +1,6 @@
-# USDOT
+# Scene_Text_Recognition
 
-USDOT
+Scene_Text_Recognition
 
 ## 1. Install Process
 
